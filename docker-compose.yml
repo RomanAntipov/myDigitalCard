@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: roman_card_db
+    environment:
+      POSTGRES_USER: roman_developer
+      POSTGRES_PASSWORD: myDevPassword102026
+      POSTGRES_DB: digital_business_card
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

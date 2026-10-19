@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+*.log
+*.tsbuildinfo
+
+# ИИ-скиллы Prisma 8 (не нужны в репозитории)
+.agents/
+.claude/
+.cursor/
+.devin/
