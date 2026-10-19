@@ -1,21 +1,52 @@
 // use prisma-8
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String?
-  name      String?
-  posts     Post[]
-  createdAt TimestamptzString @default(now())
-  updatedAt temporal.updatedAtString()
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-  createdAt TimestamptzString @default(now())
-  updatedAt temporal.updatedAtString()
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Profile {
+  id String @id @default(uuid())
+  name String
+  description String
+  skills Skill[]
+  experience Experience[]
+  projects Project[]
+}
+
+model Experience {
+  id String @id @default(uuid())
+  achievement String[]
+  company String
+  startDate DateTime
+  endDate DateTime
+  profileId String
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+}
+
+model Skill {
+  id String @id @default(uuid())
+  name String
+  profileId String
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+}
+
+model Project {
+  id String @id @default(uuid())
+  name String
+  description String
+  stack     String[]
+  link      String?
+  profileId String
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
 }
