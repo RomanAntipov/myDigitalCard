@@ -13,7 +13,7 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
     console.log('PrismaService инициализирован');
     // Устанавливаем соединение с БД.
     // Должно работать и без этого, но оставляю для логичности кода.
-    await this.db.$connect();
+    await this.db.connect();
     // Автозаполнение БД (если ещё пустая).
     await this.seed()
   }
@@ -24,7 +24,7 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
 
   private async seed() {
     // Получить количество строк в таблице Profile (если их более 0 БД считаем не пустой).
-    const profileCountInDb = await this.db.Profile.count();
+    const profileCountInDb = await this.db.profile.count();
 
     // если count > 0 - прекратить выполнение.
     if (profileCountInDb > 0)
@@ -37,7 +37,7 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
 
     try {
       // Создание строки в таблице Profile и каскадное заполнение связанных таблиц
-      await this.db.Profile.create({
+      await this.db.profile.create({
         data: {
           name: content.name,
           description: content.description,
