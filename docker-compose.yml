@@ -4,7 +4,7 @@ services:
   postgres:
     image: postgres:15-alpine
     container_name: roman_card_db
-    environment:
+    docker compose up -d
       POSTGRES_USER: roman_developer
       POSTGRES_PASSWORD: myDevPassword102026
       POSTGRES_DB: digital_business_card
