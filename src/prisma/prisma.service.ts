@@ -10,7 +10,7 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
   public readonly db = db;
 
   async onModuleInit() {
-    console.log('PrismaService инициализирован');
+    console.log ('PrismaService инициализирован');
     // Устанавливаем соединение с БД.
     // Должно работать и без этого, но оставляю для логичности кода.
     await this.db.connect();
@@ -44,22 +44,26 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
           description: content.description,
           
           // Заполняем связь с моделью Skill
-          skills: content.skills,
+          // В Prisma 8 связи передаются через колбэк с мутатором:
+          // content.skills - массив объектов вида 
+          //      { "name": "JavaScript" },
+          //      { "name": "Node.js" },
+          skills: (mutator) => mutator.create(content.skills),
           
           // Заполняем связь с моделью Experience
           // Используется перебор элементов массива для преобразования дат из строки ISO
           // в объект "дата"
-          experience: content.experience.map(exp => ({
+          experience: (mutator) => mutator.create(content.experience.map(exp => ({
               company: exp.company,
               // поля типа DateTime:
               startDate: new Date(exp.startDate),
               endDate: new Date(exp.endDate),
               // Массив строк Text[]
               achievement: exp.achievement,
-            })),
+            }))),
           
           // Заполняем связь с моделью Project
-          projects: content.projects,
+          projects: (mutator) => mutator.create(content.projects),
         },
       );
     } catch (e) {
