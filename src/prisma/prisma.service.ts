@@ -24,10 +24,12 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
 
   private async seed() {
     // Получить количество строк в таблице Profile (если их более 0 БД считаем не пустой).
-    const profileCountInDb = await this.db.profile.count();
+    // В Prisma 8 метод count возвращает тип IncludeScalar<number>
+    // Для работы сравнения сделаем приведение типов.
+    const profileCountInDb = await this.db.orm.public.Profile.count() as unknown as number;
 
     // если count > 0 - прекратить выполнение.
-    if (profileCountInDb > 0)
+    if (profileCountInDb.valueOf() > 0)
       {
         console.log('БД не пуста, автозаполнение не требуется.')
         return;
@@ -37,8 +39,7 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
 
     try {
       // Создание строки в таблице Profile и каскадное заполнение связанных таблиц
-      await this.db.profile.create({
-        data: {
+      await  this.db.orm.public.Profile.create({
           name: content.name,
           description: content.description,
           
@@ -66,7 +67,7 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
             create: content.projects,
           },
         },
-      });
+      );
     } catch (e) {
       console.error('Заполнение завершилось с ошибкой', e)
     }
