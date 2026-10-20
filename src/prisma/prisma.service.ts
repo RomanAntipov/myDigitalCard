@@ -44,15 +44,12 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
           description: content.description,
           
           // Заполняем связь с моделью Skill
-          skills: {
-            create: content.skills,
-          },
+          skills: content.skills,
           
           // Заполняем связь с моделью Experience
           // Используется перебор элементов массива для преобразования дат из строки ISO
           // в объект "дата"
-          experience: {
-            create: content.experience.map(exp => ({
+          experience: content.experience.map(exp => ({
               company: exp.company,
               // поля типа DateTime:
               startDate: new Date(exp.startDate),
@@ -60,12 +57,9 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
               // Массив строк Text[]
               achievement: exp.achievement,
             })),
-          },
           
           // Заполняем связь с моделью Project
-          projects: {
-            create: content.projects,
-          },
+          projects: content.projects,
         },
       );
     } catch (e) {
