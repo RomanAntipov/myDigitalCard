@@ -13,8 +13,8 @@ model Experience {
   id String @id @default(uuid())
   achievement String[]
   company String
-  startDate DateTime
-  endDate DateTime
+  startDate TimestamptzString
+  endDate TimestamptzString
   profileId String
   profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
