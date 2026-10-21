@@ -9,4 +9,6 @@ dist/
 .claude/
 .cursor/
 .devin/
-.content/
+
+# Временные файлы с информацией для наполнения.
+content/

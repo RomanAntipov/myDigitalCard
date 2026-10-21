@@ -2,6 +2,7 @@
   "name": "myDigitalCard",
   "version": "0.0.1",
   "description": "",
+  "type": "module",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
@@ -9,10 +10,10 @@
     "build": "nest build",
     "deploy": "nest deploy",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start": "nest start --exec \"node --experimental-detect-module\"",
+    "start:dev": "nest start --watch --exec \"node --import tsx --experimental-detect-module\"",
+    "start:debug": "nest start --debug --watch --exec \"node --import tsx --experimental-detect-module\"",
+    "start:prod": "node --experimental-detect-module dist/main.js",
     "lint": "oxlint --type-aware src/ test/",
     "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --watch",
@@ -21,6 +22,9 @@
     "test:e2e": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --config ./test/jest-e2e.json",
     "postinstall": "prisma skills sync || exit 0",
     "contract:emit": "prisma contract emit"
+  },
+  "imports": {
+    "#src/*": "./dist/*"
   },
   "dependencies": {
     "@nestjs/common": "^12.0.1",
@@ -54,6 +58,7 @@
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.23.15",
     "typescript": "^6.0.2"
   }
 }

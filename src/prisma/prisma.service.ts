@@ -26,10 +26,13 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
     // Получить количество строк в таблице Profile (если их более 0 БД считаем не пустой).
     // В Prisma 8 метод count возвращает тип IncludeScalar<number>
     // Для работы сравнения сделаем приведение типов.
-    const profileCountInDb = await this.db.orm.public.Profile.count() as unknown as number;
+    const existingProfileInDb = await this.db.orm.public.Profile
+    .select('id')   // Указываем, какое поле вернуть
+    .limit(1)       // Ограничиваем выборку одной строкой
+    .first();       // Терминальный метод: вернет объект или null
 
     // если count > 0 - прекратить выполнение.
-    if (profileCountInDb.valueOf() > 0)
+    if (existingProfileInDb !== null)
       {
         console.log('БД не пуста, автозаполнение не требуется.')
         return;
@@ -48,22 +51,24 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
           // content.skills - массив объектов вида 
           //      { "name": "JavaScript" },
           //      { "name": "Node.js" },
-          skills: (mutator) => mutator.create(content.skills),
+          skills: (mutator: any) => mutator.create(content.skills),
           
           // Заполняем связь с моделью Experience
           // Используется перебор элементов массива для преобразования дат из строки ISO
           // в объект "дата"
-          experience: (mutator) => mutator.create(content.experience.map(exp => ({
+          experience: (mutator: any) => mutator.create(content.experience.map(exp => ({
               company: exp.company,
-              // поля типа DateTime:
-              startDate: new Date(exp.startDate),
-              endDate: new Date(exp.endDate),
+              // поля типа DateTime (в content.json хранятся как строки ISO):
+              // startDate: Temporal.Instant.from(exp.startDate),
+              // endDate: Temporal.Instant.from(exp.endDate),
+              startDate: exp.startDate,
+              endDate: exp.endDate,
               // Массив строк Text[]
               achievement: exp.achievement,
             }))),
           
           // Заполняем связь с моделью Project
-          projects: (mutator) => mutator.create(content.projects),
+          projects: (mutator: any) => mutator.create(content.projects),
         },
       );
     } catch (e) {

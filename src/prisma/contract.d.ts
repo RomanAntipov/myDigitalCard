@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'432fe6b5ba2d62700b6b3c643c4fb003acd4e21d41b6d24589f34b02f147ed29'>;
+  StorageHashBase<'8dc16b24a588058a9639963446980f7caf56dbb06fb9e1ed8a849d6dd4179843'>;
 export type ExecutionHash =
   ExecutionHashBase<'7589c8df4ad750c76e5cd4a99399d0ee5c942419e9d52c410fd0a6e04427e3e6'>;
 export type ProfileHash =
@@ -237,10 +237,10 @@ export type FieldOutputTypes = {
     readonly Experience: {
       readonly achievement: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
       readonly company: CodecTypes['pg/text@1']['output'];
-      readonly endDate: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly endDate: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly profileId: CodecTypes['pg/text@1']['output'];
-      readonly startDate: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly startDate: CodecTypes['pg/timestamptz-string@1']['output'];
     };
     readonly Profile: {
       readonly description: CodecTypes['pg/text@1']['output'];
@@ -267,10 +267,10 @@ export type FieldInputTypes = {
     readonly Experience: {
       readonly achievement: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
       readonly company: CodecTypes['pg/text@1']['input'];
-      readonly endDate: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly endDate: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly profileId: CodecTypes['pg/text@1']['input'];
-      readonly startDate: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly startDate: CodecTypes['pg/timestamptz-string@1']['input'];
     };
     readonly Profile: {
       readonly description: CodecTypes['pg/text@1']['input'];
@@ -297,10 +297,10 @@ export type StorageColumnTypes = {
     readonly Experience: {
       readonly achievement: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
       readonly company: CodecTypes['pg/text@1']['output'];
-      readonly endDate: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly endDate: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly profileId: CodecTypes['pg/text@1']['output'];
-      readonly startDate: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly startDate: CodecTypes['pg/timestamptz-string@1']['output'];
     };
     readonly Profile: {
       readonly description: CodecTypes['pg/text@1']['output'];
@@ -327,10 +327,10 @@ export type StorageColumnInputTypes = {
     readonly Experience: {
       readonly achievement: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
       readonly company: CodecTypes['pg/text@1']['input'];
-      readonly endDate: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly endDate: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly profileId: CodecTypes['pg/text@1']['input'];
-      readonly startDate: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly startDate: CodecTypes['pg/timestamptz-string@1']['input'];
     };
     readonly Profile: {
       readonly description: CodecTypes['pg/text@1']['input'];
@@ -357,10 +357,10 @@ export namespace Models {
   export type public_Experience = {
     achievement: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
     company: CodecTypes['pg/text@1']['output'];
-    endDate: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    endDate: CodecTypes['pg/timestamptz-string@1']['output'];
     id: CodecTypes['pg/text@1']['output'];
     profileId: CodecTypes['pg/text@1']['output'];
-    startDate: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    startDate: CodecTypes['pg/timestamptz-string@1']['output'];
     profile: public_Profile;
     readonly [RelationKeys]?: 'profile';
   };
@@ -435,7 +435,7 @@ type ContractBase = Omit<
                 };
                 readonly endDate: {
                   readonly dataType: 'pg/timestamptz';
-                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly codecId: 'pg/timestamptz-string@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
@@ -453,7 +453,7 @@ type ContractBase = Omit<
                 };
                 readonly startDate: {
                   readonly dataType: 'pg/timestamptz';
-                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly codecId: 'pg/timestamptz-string@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
@@ -657,7 +657,7 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: {
                   readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly codecId: 'pg/timestamptz-string@1';
                 };
               };
               readonly id: {
@@ -672,7 +672,7 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: {
                   readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly codecId: 'pg/timestamptz-string@1';
                 };
               };
             };
