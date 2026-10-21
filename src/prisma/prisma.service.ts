@@ -9,6 +9,8 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
   // Пробрасываем типизированный инстанс клиента наружу
   public readonly db = db;
 
+
+
   async onModuleInit() {
     console.log ('PrismaService инициализирован');
     // Устанавливаем соединение с БД.
@@ -22,11 +24,16 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
     console.log('Соединение с базой данных закрыто');
   }
 
+    // Геттер для быстрого доступа к таблицам схемы public в Prisma 8
+  public get client() {
+    return this.db.orm.public;
+  }
+  
   private async seed() {
     // Получить количество строк в таблице Profile (если их более 0 БД считаем не пустой).
     // В Prisma 8 метод count возвращает тип IncludeScalar<number>
     // Для работы сравнения сделаем приведение типов.
-    const existingProfileInDb = await this.db.orm.public.Profile
+    const existingProfileInDb = await this.client.Profile
     .select('id')   // Указываем, какое поле вернуть
     .limit(1)       // Ограничиваем выборку одной строкой
     .first();       // Терминальный метод: вернет объект или null
