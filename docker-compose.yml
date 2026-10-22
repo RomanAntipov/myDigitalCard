@@ -3,16 +3,36 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: roman_card_db
+    container_name: digital_card_db
+    # Docker Compose автоматически подставит значения из файла .env
     environment:
-      POSTGRES_USER: roman_developer
-      POSTGRES_PASSWORD: myDevPassword102026
-      POSTGRES_DB: digital_business_card
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    restart: unless-stopped
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    container_name: digital_card_api
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      NODE_ENV: production
+    depends_on:
+      postgres:
+        condition: service_healthy
+        # Перед стартом сервера только проверяем актуальность таблиц, а сидинг NestJS сделает сам
+    command: >
+      sh -c "npx prisma db update --schema=./src/prisma/contract.prisma && node --import tsx --experimental-detect-module dist/main.js"
 
 volumes:
-  postgres_data:
+  pgdata:
