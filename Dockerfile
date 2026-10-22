@@ -32,8 +32,10 @@ RUN npm ci --only=production
 # Копируем скомпилированное приложение из этапа builder
 COPY --from=builder /app/dist ./dist
 # Копируем сгенерированный клиент Prisma, чтобы ORM работала внутри контейнера
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/src/prisma ./src/prisma
+
+# Копируем файл конфигурации Призмы.
+COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 
 # Открываем порт для NestJS
 EXPOSE 3000

@@ -32,7 +32,7 @@ services:
         condition: service_healthy
         # Перед стартом сервера только проверяем актуальность таблиц, а сидинг NestJS сделает сам
     command: >
-      sh -c "npx prisma db update --schema=./src/prisma/contract.prisma && node --import tsx --experimental-detect-module dist/main.js"
+      sh -c "npx prisma db update && node --import tsx --experimental-detect-module dist/main.js"
 
 volumes:
   pgdata:
