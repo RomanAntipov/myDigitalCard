@@ -40,5 +40,5 @@ COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 # Открываем порт для NestJS
 EXPOSE 3000
 
-# Запуск приложения с твоими флагами для ESM и tsx
+# Запуск приложения
 CMD ["node", "--import", "tsx", "--experimental-detect-module", "dist/main.js"]
