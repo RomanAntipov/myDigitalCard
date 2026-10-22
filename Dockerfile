@@ -11,8 +11,8 @@ RUN npm ci
 # Копируем исходный код и контракт базы данных
 COPY . .
 
-# Генерируем клиент Prisma под Linux-архитектуру контейнера
-RUN npx prisma generate --schema=./src/prisma/contract.prisma
+# Генерируем типы и JSON-контракт через contract emit
+RUN npx prisma contract emit
 
 # Собираем NestJS проект в папку dist
 RUN npm run build
