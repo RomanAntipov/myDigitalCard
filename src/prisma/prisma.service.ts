@@ -32,7 +32,7 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
   private async seed() {
     // Получить количество строк в таблице Profile (если их более 0 БД считаем не пустой).
     // В Prisma 8 метод count возвращает тип IncludeScalar<number>
-    // Для работы сравнения сделаем приведение типов.
+    // поэтому просто получаем первую найденную строку.
     const existingProfileInDb = await this.client.Profile
     .select('id')   // Указываем, какое поле вернуть
     .limit(1)       // Ограничиваем выборку одной строкой
@@ -68,6 +68,7 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
               // поля типа DateTime (в content.json хранятся как строки ISO):
               // startDate: Temporal.Instant.from(exp.startDate),
               // endDate: Temporal.Instant.from(exp.endDate),
+              position: exp.position,
               startDate: exp.startDate,
               endDate: exp.endDate,
               // Массив строк Text[]

@@ -13,6 +13,7 @@ model Experience {
   id String @id @default(uuid())
   achievement String[]
   company String
+  position String
   startDate TimestamptzString
   endDate TimestamptzString
   profileId String

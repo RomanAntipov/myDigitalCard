@@ -31,7 +31,10 @@ export class CardResolver {
         const profileFieldsArr: any[] = this.makePropsStringByAstArr(selections);
         
         // Объект для хранения связей, которые передадим в .include()
-        const relationsToInclude: Record<string, any> = {};
+        // const relationsToInclude: any[] = [];
+
+        // 3. Базовый запрос (поля с вложенностью добавим в цикле)
+        let baseQuery = this.prisma.client.Profile
 
         // перебрать в цикле все элементы selections, плоские элементы пропустить, 
         // элементы содержащие selectionSet передать в makePropsStringByAstArr() 
@@ -46,18 +49,11 @@ export class CardResolver {
 
              // 1. Собираем массив строк только для внутренностей этой конкретной связи
             const subFieldsArr = this.makePropsStringByAstArr(item.selectionSet.selections);
-
-            // 2. Передаем собранные поля во вложенный .select() мутатора Prisma 8
-            relationsToInclude[fieldName] = (mutator: any) => mutator.select(...subFieldsArr);
-
-        }
-
-        // 3. Базовый запрос
-        let baseQuery = this.prisma.client.Profile
-
-        // 4. Если были запрошены вложенные сущности, добавляем их через .include()
-        if (Object.keys(relationsToInclude).length > 0) {
-            baseQuery = baseQuery.include(relationsToInclude as any);
+            
+            // 4. Если были запрошены вложенные сущности, добавляем их через .include()
+            if (subFieldsArr.length > 0) {
+                baseQuery = baseQuery.include(fieldName as any, (relationMutator: any) => relationMutator.select(...subFieldsArr));
+            }
         }
 
         // 5. Запрос полей профиля с ранее добавленными include
